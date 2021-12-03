@@ -1,4 +1,6 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Exchange} from './exchange.model';
+import {CryptoCurrency} from './crypto-currency.model';
 
 @model({settings: {strict: false}})
 export class Trade extends Entity {
@@ -14,25 +16,14 @@ export class Trade extends Entity {
     required: true,
   })
   script: string;
-
-  @property({
-    type: 'number',
-    required: true,
-  })
+  @belongsTo(() => Exchange, {name: 'trade_exchange'})
   exchange_id: number;
 
-  @property({
-    type: 'number',
-    required: true,
-  })
+  @belongsTo(() => CryptoCurrency, {name: 'trade_currency_from'})
   currency_from_id: number;
 
-  @property({
-    type: 'number',
-    required: true,
-  })
+  @belongsTo(() => CryptoCurrency, {name: 'trade_currency_to'})
   currency_to_id: number;
-
   // Define well-known properties here
 
   // Indexer property to allow additional data

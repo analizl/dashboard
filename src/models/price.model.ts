@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Trade} from './trade.model';
 
 @model({settings: {strict: false}})
 export class Price extends Entity {
@@ -14,19 +15,14 @@ export class Price extends Entity {
     required: true,
   })
   date: string;
-
-  @property({
-    type: 'number',
-    required: true,
-  })
-  trade_id: number;
-
   @property({
     type: 'number',
     required: true,
   })
   price: number;
 
+  @belongsTo(() => Trade, {name: 'price_trade'})
+  trade_id: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data

@@ -1,5 +1,5 @@
 import {BootMixin} from '@loopback/boot';
-import {ApplicationConfig} from '@loopback/core';
+import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
 import {
   RestExplorerBindings,
   RestExplorerComponent,
@@ -9,6 +9,9 @@ import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import {CronComponent} from '@loopback/cron';
+import {MyCronJob} from './jobs/MyCronJob';
+import {LoggingBindings, LoggingComponent} from '@loopback/logging';
 
 export {ApplicationConfig};
 
@@ -40,5 +43,12 @@ export class DashboardApplication extends BootMixin(
         nested: true,
       },
     };
+    this.configure(LoggingBindings.COMPONENT).to({
+      enableFluent: false, // default to true
+      enableHttpAccessLog: true, // default to true
+    });
+    this.component(CronComponent);
+    this.add(createBindingFromClass(MyCronJob));
+    this.component(LoggingComponent);
   }
 }

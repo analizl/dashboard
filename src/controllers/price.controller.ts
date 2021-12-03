@@ -17,13 +17,17 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Price} from '../models';
-import {PriceRepository} from '../repositories';
+import {Price, Trade} from '../models';
+import {PriceRepository, TradeRepository, ExchangeRepository} from '../repositories';
 
 export class PriceController {
   constructor(
     @repository(PriceRepository)
     public priceRepository : PriceRepository,
+    @repository(TradeRepository)
+    public tradeRepository : TradeRepository,
+    @repository(ExchangeRepository)
+    public exchangeRepository : ExchangeRepository
   ) {}
 
   @post('/prices')
@@ -37,14 +41,21 @@ export class PriceController {
         'application/json': {
           schema: getModelSchemaRef(Price, {
             title: 'NewPrice',
-            exclude: ['id'],
+            exclude: ['id', 'date', 'price'],
           }),
         },
       },
     })
-    price: Omit<Price, 'id'>,
+    price: Omit<Price, 'id'|'date'|'price'>,
   ): Promise<Price> {
-    return this.priceRepository.create(price);
+    const date:Date = new Date();
+    const trade = await this.tradeRepository.findById(price.trade_id);
+    price.date=date;
+    const exchange = await this.exchangeRepository.findById(trade.exchange_id);
+    const script_exchange=eval(exchange.script)
+    const script_trade=eval(trade.script)
+    price.price=script_trade(script_exchange)
+    return this.priceRepository.create(price)
   }
 
   @get('/prices/count')
