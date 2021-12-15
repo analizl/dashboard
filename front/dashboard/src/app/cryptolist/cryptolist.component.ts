@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Crypto } from '../model/Crypto';
+import {CryptoInMemoryService} from '../crypto-in-memory.service';
 
 @Component({
   selector: 'app-cryptolist',
@@ -9,7 +10,7 @@ import { Crypto } from '../model/Crypto';
       <!-- LIST OF Cryptos -->
       <div class="row justify-content-md-center">
         <ul class="list-group">
-          <li class="list-group-item list-group-item-action" *ngFor="let crypto of cryptos">
+          <li class="list-group-item list-group-item-action" *ngFor="let crypto of cryptos()">
             <span>{{crypto.name}} - </span>
             <span>{{crypto.symbol}}</span>
             <div class="pull-right">
@@ -33,21 +34,19 @@ import { Crypto } from '../model/Crypto';
   ]
 })
 export class CryptolistComponent implements OnInit {
-  cryptos : Crypto[];
-  constructor() {
-    this.cryptos = [
-      new Crypto("Bitcoin", "BTC", "a description", "a wiki url"),
-      new Crypto("Ethereum", "ETH", "a description", "a wiki url"),
-      new Crypto("Otra crypto", "ABC", "a description", "a wiki url"),
-    ];
 
-  }
+  constructor(private service: CryptoInMemoryService) {
+ }
 
   ngOnInit(): void {
   }
 
+  cryptos(){
+    return this.service.getCryptosList();
+  }
+
   onRemove(aCrypto:Crypto){
-    this.cryptos = this.cryptos.filter(crypto => crypto !== aCrypto);
+    this.service.deleteCrypto(aCrypto);
   }
   onEdit(aCrypto:Crypto){
   }

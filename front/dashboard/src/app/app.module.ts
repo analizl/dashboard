@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { CryptolistComponent } from './cryptolist/cryptolist.component';
 import { NewCryptoComponent } from './new-crypto/new-crypto.component';
 
+import { HttpClientModule } from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -14,7 +17,7 @@ import { NewCryptoComponent } from './new-crypto/new-crypto.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
