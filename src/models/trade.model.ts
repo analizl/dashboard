@@ -24,6 +24,11 @@ export class Trade extends Entity {
 
   @belongsTo(() => CryptoCurrency, {name: 'trade_currency_to'})
   currency_to_id: number;
+
+  @property({
+    type: 'number',
+  })
+  exchangeId?: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data
