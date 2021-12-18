@@ -17,6 +17,11 @@ export class Price extends Entity {
   date: string;
   @property({
     type: 'number',
+    mysql: {
+      dataType: 'float',
+      precision: 20,
+      scale: 8
+    },
     required: true,
   })
   price: number;
