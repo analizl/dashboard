@@ -1,6 +1,7 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
 import {Exchange} from './exchange.model';
 import {CryptoCurrency} from './crypto-currency.model';
+import {Price} from './price.model';
 
 @model({settings: {strict: false}})
 export class Trade extends Entity {
@@ -29,6 +30,9 @@ export class Trade extends Entity {
     type: 'number',
   })
   exchangeId?: number;
+
+  @hasMany(() => Price, {keyTo: 'trade_id'})
+  prices: Price[];
   // Define well-known properties here
 
   // Indexer property to allow additional data

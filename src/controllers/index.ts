@@ -7,3 +7,4 @@ export * from './price-trade.controller';
 export * from './trade-exchange.controller';
 export * from './trade-crypto-currency.controller';
 export * from './exchange-trade.controller';
+export * from './trade-price.controller';

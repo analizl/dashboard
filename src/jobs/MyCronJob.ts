@@ -27,11 +27,13 @@ export class MyCronJob extends CronJob {
             const script_exchange = eval(exchange.script)
             const script_trade = eval(trade.script)
             price.price = script_trade(script_exchange)
+            price.price = script_trade
             price.trade_id = trade.id ?? 0
             await this.priceRepository.create(price)
-            this.logger.log('info','success');
+            console.log("price"+price)
+            //this.logger.log('info','success');
           } catch (e){
-            this.logger.log('info','error');
+            //this.logger.log('info','error');
           }
         }
       },
