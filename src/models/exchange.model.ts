@@ -16,12 +16,6 @@ export class Exchange extends Entity {
   })
   name: string;
 
-  @property({
-    type: 'string',
-    required: true,
-  })
-  script: string;
-
   @hasMany(() => Trade)
   trades: Trade[];
   // Define well-known properties here
