@@ -20,6 +20,6 @@ const getContent = function(url) {
   })
 };
 
-getContent('https://api.binance.com/api/v3/ticker/price?symbol=LTCBTC')
+getContent('https://api.binance.com/api/v3/ticker/price?symbol=LTCETH')
   .then(html => JSON.parse(html))
   .catch((err) => console.error(err));
