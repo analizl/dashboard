@@ -12,6 +12,13 @@ import {MySequence} from './sequence';
 import {CronComponent} from '@loopback/cron';
 import {MyCronJob} from './jobs/MyCronJob';
 import {LoggingBindings, LoggingComponent} from '@loopback/logging';
+import {AuthenticationComponent} from '@loopback/authentication';
+import {
+  JWTAuthenticationComponent,
+  SECURITY_SCHEME_SPEC,
+  UserServiceBindings,
+} from '@loopback/authentication-jwt';
+import {DevelopmentDataSource} from './datasources';
 
 export {ApplicationConfig};
 
@@ -50,5 +57,13 @@ export class DashboardApplication extends BootMixin(
     this.component(CronComponent);
     this.add(createBindingFromClass(MyCronJob));
     this.component(LoggingComponent);
+
+    // Auth + JWT
+    // Mount authentication system
+    this.component(AuthenticationComponent);
+    // Mount jwt component
+    this.component(JWTAuthenticationComponent);
+    // Bind datasource
+    this.dataSource(DevelopmentDataSource, UserServiceBindings.DATASOURCE_NAME);
   }
 }
