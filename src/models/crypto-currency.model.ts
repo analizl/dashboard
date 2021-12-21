@@ -1,5 +1,4 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {User} from './user.model';
+import {Entity, model, property} from '@loopback/repository';
 
 @model({settings: {strict: false}})
 export class CryptoCurrency extends Entity {
@@ -32,9 +31,7 @@ export class CryptoCurrency extends Entity {
   })
   wiki?: string;
 
-  @belongsTo(() => User)
-  userId: string;
-  // Define well-known properties here
+
 
   // Indexer property to allow additional data
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
