@@ -49,10 +49,12 @@
     "!*/__tests__"
   ],
   "dependencies": {
+    "@loopback/authentication": "^7.3.4",
+    "@loopback/authentication-jwt": "^0.9.4",
     "@loopback/boot": "^3.4.4",
     "@loopback/core": "^2.18.0",
-    "@loopback/cron": "^0.7.0",
-    "@loopback/logging": "^0.7.0",
+    "@loopback/cron": "^0.6.1",
+    "@loopback/logging": "^0.6.4",
     "@loopback/repository": "^3.7.3",
     "@loopback/rest": "^10.1.0",
     "@loopback/rest-explorer": "^3.3.4",
