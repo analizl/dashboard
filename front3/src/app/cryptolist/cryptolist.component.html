@@ -1,0 +1,41 @@
+<div class="content">
+	<div class="row justify-content-md-center">
+		<h3>Crypto list</h3>
+	</div>
+
+	<!-- NEW Crypto -->
+	<div class="row justify-content-md-center">
+		<nav>
+			<a routerLink="/new-crypto" class="pull-right btn btn-primary btn-xs">New crypto</a>
+		</nav>
+	</div>
+	<br>
+
+
+	<!-- LIST OF Cryptos -->
+	<div class="row justify-content-md-center">
+		<table class="table table-striped ml-2 md-2">
+			<thead>
+			<tr>
+				<th scope="col">Symbol</th>
+				<th scope="col">Name</th>
+				<th scope="col">Description</th>
+				<th scope="col">Wikipedia URL</th>
+				<th scope="col">Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr  *ngFor="let crypto of cryptos; let pos=index" >
+					<th scope="row" class="badge">{{crypto.symbol}}</th>
+						<td>{{crypto.name}}</td>
+						<td>{{ crypto.description}}</td>
+						<td><a href="{{crypto.wiki}}" target="blank">{{crypto.wiki}}</a></td>
+						<td>
+							<button class="btn btn-primary btn-xs fa fa-pencil" [routerLink]="['/modify-crypto',pos]"></button>
+							<button class="btn btn-danger btn-xs fa fa-trash-o" (click)="onRemove(crypto)"></button>
+						</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

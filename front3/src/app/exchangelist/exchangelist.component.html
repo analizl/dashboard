@@ -1,0 +1,37 @@
+<div class="content">
+	<div class="row justify-content-md-center">
+		<h3>Exchanges list</h3>
+	</div>
+
+	<!-- NEW Exchange -->
+	<div class="row justify-content-md-center">
+        <nav>
+			<a routerLink="/new-exchange" class="pull-right btn btn-primary btn-xs">New exchange</a>
+		</nav>
+	</div>
+	<br>
+
+
+	<!-- LIST OF Exchanges -->
+	<div class="row justify-content-md-center">
+		<table class="table table-striped ml-2 md-2">
+			<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr  *ngFor="let ex of exchanges; let pos=index" >
+					<th scope="row">
+						<a class="btn btn-link" [routerLink]="['/detail-exchange',ex.id]">{{ex.name}}</a>
+					</th>
+						<td>
+							<button class="btn btn-primary btn-xs fa fa-pencil" [routerLink]="['/modify-exchange',pos]"></button>
+							<button class="btn btn-danger btn-xs fa fa-trash-o" (click)="onRemove(ex)"></button>
+						</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

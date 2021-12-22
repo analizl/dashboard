@@ -1,0 +1,32 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="newTradeForm"> 
+
+    <div class="form-group">
+            <label for="tradeCryptoFrom">Crypto from</label>
+            <p *ngIf="erroresCryptoFrom" class="alert alert-danger"><small>{{erroresCryptoFrom}}</small></p>
+            <select formControlName="tradeCryptoFrom" required>
+              <option *ngFor="let c of cryptos" [value]="c.id">
+                {{c.name}}
+                </option>
+            </select>
+    </div>
+    <div class="form-group">
+        <label for="tradeCryptoTo">Crypto to</label>
+        <p *ngIf="erroresCryptoTo" class="alert alert-danger"><small>{{erroresCryptoTo}}</small></p> 
+        <select formControlName="tradeCryptoTo" required>
+            <option *ngFor="let crypto of cryptos" [value]="crypto.id">
+              {{crypto.name}}
+              </option>
+          </select>
+    </div>
+    <div class="form-group">
+        <label for="tradeScript">Script</label>
+        <p *ngIf="erroresScript" class="alert alert-danger"><small>{{erroresScript}}</small></p>
+        <input type="text" formControlName="tradeScript" class="form-control" required>
+    </div>
+ 
+   <div class="form-group">
+       <button class="btn btn-primary" type="submit">Save</button>    
+       <a routerLink="['/detail-exchange',exId]" class="btn btn-link">Cancel</a>
+   </div>
+
+</form>
