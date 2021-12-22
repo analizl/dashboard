@@ -1,17 +1,17 @@
+import {authenticate} from '@loopback/authentication';
 import {
-  repository,
+  repository
 } from '@loopback/repository';
 import {
-  param,
   get,
-  getModelSchemaRef,
+  getModelSchemaRef, param
 } from '@loopback/rest';
 import {
-  Trade,
-  Exchange,
+  Exchange, Trade
 } from '../models';
 import {TradeRepository} from '../repositories';
 
+@authenticate('jwt')
 export class TradeExchangeController {
   constructor(
     @repository(TradeRepository)

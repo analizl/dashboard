@@ -1,9 +1,10 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -13,14 +14,15 @@ import {
   param,
   patch,
   post,
-  requestBody,
+  requestBody
 } from '@loopback/rest';
 import {
   Exchange,
-  Trade,
+  Trade
 } from '../models';
 import {ExchangeRepository} from '../repositories';
 
+@authenticate('jwt')
 export class ExchangeTradeController {
   constructor(
     @repository(ExchangeRepository) protected exchangeRepository: ExchangeRepository,

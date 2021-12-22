@@ -1,32 +1,26 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Exchange} from '../models';
 import {ExchangeRepository} from '../repositories';
-//import {authenticate} from '@loopback/authentication';
 
-//@authenticate('jwt')
+@authenticate('jwt')
 export class ExchangeController {
   constructor(
     @repository(ExchangeRepository)
-    public exchangeRepository : ExchangeRepository,
-  ) {}
+    public exchangeRepository: ExchangeRepository,
+  ) { }
 
   @post('/exchanges')
   @response(200, {
