@@ -65,3 +65,6 @@ typings/
 
 #db
 development.datasource.ts
+
+#file
+.idea/vcs.xml

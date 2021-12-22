@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Trade } from '../model/Trade';
-import { Price } from '../model/Price';
-import { TradeService } from '../trade.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ExchangeService } from '../exchange.service';
-import { DataServiceService } from '../data.service';
-import { Exchange } from '../model/Exchange';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as echarts from 'echarts';
+import {DataServiceService} from '../data.service';
+import {ExchangeService} from '../exchange.service';
+import {Exchange} from '../model/Exchange';
+import {Price} from '../model/Price';
+import {Trade} from '../model/Trade';
+import {TradeService} from '../trade.service';
 
 @Component({
   selector: 'app-detail-trade',
@@ -14,46 +14,46 @@ import * as echarts from 'echarts';
   styleUrls: ['./detail-trade.component.css']
 })
 export class DetailTradeComponent implements OnInit {
-  trade:Trade;
-  prices:Price[]=[];
-  exchange:Exchange;
-  idT:String;
-  cryptoFrom:String;
-  cryptoTo:String;
+  trade: Trade;
+  prices: Price[] = [];
+  exchange: Exchange;
+  idT: String;
+  cryptoFrom: String;
+  cryptoTo: String;
 
-  constructor(private route: ActivatedRoute , private router:Router, private tradeService:TradeService, private exService:ExchangeService, private cryptoService: DataServiceService) { 
-    this.idT=route.snapshot.paramMap.get("id");
+  constructor(private route: ActivatedRoute, private router: Router, private tradeService: TradeService, private exService: ExchangeService, private cryptoService: DataServiceService) {
+    this.idT = route.snapshot.paramMap.get("id");
 
   }
 
   ngOnInit() {
     //getTrade
-    this.tradeService.getTrade(this.idT).subscribe((t)=>{
-      this.trade=t;
+    this.tradeService.getTrade(this.idT).subscribe((t) => {
+      this.trade = t;
       //getExchange (nombre)
-      this.exService.getExchange((this.trade.exchangeId).toString()).subscribe((e)=>{
+      this.exService.getExchange((this.trade.exchangeId).toString()).subscribe((e) => {
         this.exchange = e;
       });
       //getCrypto from y getCrypto to
-      this.cryptoService.getCrypto((this.trade.currency_from_id).toString()).subscribe((c)=>{
+      this.cryptoService.getCrypto((this.trade.currency_from_id).toString()).subscribe((c) => {
         this.cryptoFrom = c.name;
       });
-      this.cryptoService.getCrypto((this.trade.currency_to_id).toString()).subscribe((c)=>{
+      this.cryptoService.getCrypto((this.trade.currency_to_id).toString()).subscribe((c) => {
         this.cryptoTo = c.name;
       });
 
       //get Prices
-      this.tradeService.getPricesList(this.idT).subscribe((p)=>{
-        this.prices=p;
+      this.tradeService.getPricesList(this.idT).subscribe((p) => {
+        this.prices = p;
         this.dibujar();
       })
 
     });
-    
-    
-    }
-    dibujar(){
-       // initialize the echarts instance
+
+
+  }
+  dibujar() {
+    // initialize the echarts instance
     type EChartsOption = echarts.EChartsOption;
 
     var chartDom = document.getElementById('main')!;
@@ -64,11 +64,11 @@ export class DetailTradeComponent implements OnInit {
     var myChartCandle = echarts.init(chartDomCandle);
     var optionCandle: EChartsOption;
 
-    var data=[];
+    var data = [];
     this.prices.forEach(p => {
-      data.push([p.date,p.price]);
+      data.push([p.date, p.price]);
     });
-    console.log(Date.parse((data[0])[0]))
+
 
     option = {
       title: {
@@ -99,108 +99,202 @@ export class DetailTradeComponent implements OnInit {
           end: 10
         }
       ],
-      dataset:{
+      dataset: {
         source: data,
-        dimensions: ['date','price']
+        dimensions: ['date', 'price']
       },
-       series: [
+      series: [
         {
           name: 'Valor',
           type: 'line',
+          showSymbol: false,
           data: data,
           encode: {
             x: 'date',
-            y: 'price' 
-          } 
+            y: 'price'
+          }
         }
-      ] 
+      ]
     };
-
-    function splitData(aDataSet){
-      //formato => ["dia", priceOpen, priceClose, lowest, highest]
-      aDataSet.array.forEach(element => {
-        //while(sameDay){
-          //first price --> save priceOpen
-            //if price < min = save lowest
-            //if price > max = save highest
-            //save priceClose
-        //}
-      });
-    }
-    var dataCandle = splitData(data)
     option && myChart.setOption(option);
-    optionCandle={
+
+
+
+    var dataCandle = []
+    var diccDataCandle = {}
+
+    data.forEach(element => {
+      let temp = (new Date(Date.parse(element[0])));
+      let tempFormatted = ((temp.getDate()).toString() + (temp.getMonth() + 1).toString()
+        + (temp.getFullYear()).toString());
+      if (!diccDataCandle[tempFormatted.valueOf()]) {
+        diccDataCandle[tempFormatted.valueOf()] = []
+      }
+      diccDataCandle[tempFormatted.valueOf()].push(element[1]);
+
+    });
+
+    function minimo(fields) {
+      let min = 9999
+      fields.forEach(f => {
+        if (f < min) {
+          min = f
+        }
+      });
+      return min
+    }
+    function maximo(fields) {
+      let max = -1
+      fields.forEach(f => {
+        if (f > max) {
+          max = f
+        }
+      });
+      return max
+    }
+    function splitData(rawData) {
+      const categoryData = [];
+      const values = [];
+      for (var i = 0; i < rawData.length; i++) {
+        categoryData.push(rawData[i].splice(0, 1)[0]);
+        values.push(rawData[i]);
+      }
+      return {
+        categoryData: categoryData,
+        values: values
+      };
+    }
+    //formato => [["dia", priceOpen, priceClose, lowest, highest],
+    //            ["dia", priceOpen, priceClose, lowest, highest]]
+    for (const key in diccDataCandle) {
+      let min = minimo(diccDataCandle[key])
+      let max = maximo(diccDataCandle[key])
+      let last = diccDataCandle[key].length - 1
+      let fechaParseada: String = "";
+      fechaParseada += key[0]
+      fechaParseada += key[1]
+      fechaParseada += '/'
+      fechaParseada += key[2]
+      fechaParseada += key[3]
+      fechaParseada += '/'
+      fechaParseada += key[4]
+      fechaParseada += key[4]
+      fechaParseada += key[4]
+      fechaParseada += key[4]
+      let cadaDia = [fechaParseada, diccDataCandle[key][0], diccDataCandle[key][last.valueOf()], min, max]
+      dataCandle.push(cadaDia)
+    }
+    console.log(diccDataCandle)
+    console.log(dataCandle)
+    const data0 = splitData(dataCandle)
+
+    const upColor = '#ec0000';
+    const upBorderColor = '#8A0000';
+    const downColor = '#00da3c';
+    const downBorderColor = '#008F28';
+
+    optionCandle = {
       title: {
-        text: 'Cotizaciones'
+        text: 'Cotizaciones Boxplot',
+        left: 0
       },
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross'
+        }
       },
       legend: {
-        data: ['Valor']
+        data: ["Valor"]//data.[valor]
+      },
+      grid: {
+        left: '10%',
+        right: '10%',
+        bottom: '15%'
       },
       xAxis: {
-        type: 'time',
-        name: 'Fecha',
+        type: 'category',
+        data: data0.categoryData, //data.category
+        scale: true,
+        boundaryGap: false,
+        axisLine: {onZero: false},
+        splitLine: {show: false},
+        min: 'dataMin',
+        max: 'dataMax'
       },
       yAxis: {
-        type: 'value',
-        boundaryGap: [0, '5%']
+        scale: true,
+        splitArea: {
+          show: true
+        }
       },
       dataZoom: [
         {
           type: 'inside',
-          start: 0,
-          end: 10
+          start: 50,
+          end: 100
         },
         {
-          start: 0,
-          end: 10
+          show: true,
+          type: 'slider',
+          top: '90%',
+          start: 50,
+          end: 100
         }
       ],
-      dataset:{
-        source: data,
-        dimensions: ['date','price']
-      },
-      series:[
+      series: [
         {
-          name: '日K',
+          name: 'Valor',
           type: 'candlestick',
-          data: data,
+          data: data0.values,
           itemStyle: {
-            color: "#00ff00",
-            color0: "#ff0000",
-            borderColor: "#00ff00",
-            borderColor0: "#ff0000"
+            color: upColor,
+            color0: downColor,
+            borderColor: upBorderColor,
+            borderColor0: downBorderColor
           },
-          markPoint: {
-            /* label: {
-              formatter: function (param) {
-                return param != null ? Math.round(param.value) + '' : '';
-              }
-            }, */
+          markLine: {
+            symbol: ['none', 'none'],
             data: [
-              {
-                name: 'Mark',
-                coord: ['2013/5/31', 2300],
-                value: 2300,
-                itemStyle: {
-                  color: 'rgb(41,60,85)'
+              [
+                {
+                  name: 'from lowest to highest',
+                  type: 'min',
+                  valueDim: 'lowest',
+                  symbol: 'circle',
+                  symbolSize: 10,
+                  label: {
+                    show: false
+                  },
+                  emphasis: {
+                    label: {
+                      show: false
+                    }
+                  }
+                },
+                {
+                  type: 'max',
+                  valueDim: 'highest',
+                  symbol: 'circle',
+                  symbolSize: 10,
+                  label: {
+                    show: false
+                  },
+                  emphasis: {
+                    label: {
+                      show: false
+                    }
+                  }
                 }
-              },
+              ],
               {
-                name: 'highest value',
-                type: 'max',
-                valueDim: 'highest'
-              },
-              {
-                name: 'lowest value',
+                name: 'min line on close',
                 type: 'min',
-                valueDim: 'lowest'
+                valueDim: 'close'
               },
               {
-                name: 'average value on close',
-                type: 'average',
+                name: 'max line on close',
+                type: 'max',
                 valueDim: 'close'
               }
             ]
@@ -209,6 +303,6 @@ export class DetailTradeComponent implements OnInit {
       ]
     };
     optionCandle && myChartCandle.setOption(optionCandle);
-    }
+  }
 
 }
