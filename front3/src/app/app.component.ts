@@ -1,39 +1,18 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  template: `<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-      <!-- Collapsible wrapper -->
-      <div
-        class="collapse navbar-collapse justify-content-center"
-        id="navbarCenteredExample"
-      >
-        <!-- Left links -->
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="exchange">Exchanges</a>
-          </li>
-        </ul>
-        <!-- Left links -->
-      </div>
-      <!-- Collapsible wrapper -->
-    </div>
-    <!-- Container wrapper -->
-  </nav>
-  
-  <div class="row justify-content-md-center">
-  <h1>{{title}}</h1>
-  </div>
-  <router-outlet></router-outlet>
-
-  `,
-  styles: []
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'Currency DashBoard';
+  constructor(private router: Router) {
+
+  }
+  logout() {
+    localStorage.clear()
+    this.router.navigateByUrl('/login');
+  }
 }

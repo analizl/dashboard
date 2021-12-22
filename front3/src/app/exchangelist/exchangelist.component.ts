@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Exchange } from '../model/Exchange';
-import { ExchangeService } from '../exchange.service';
+import {Component, OnInit} from '@angular/core';
+import {ExchangeService} from '../exchange.service';
+import {Exchange} from '../model/Exchange';
 
 @Component({
   selector: 'app-exchangelist',
@@ -9,41 +9,31 @@ import { ExchangeService } from '../exchange.service';
 })
 export class ExchangelistComponent implements OnInit {
 
-  constructor(private exService:ExchangeService) { }
-  exchanges:Exchange[];
-  loading:Boolean;
-  errorMessage=""
-  
+  constructor(private exService: ExchangeService) { }
+  exchanges: Exchange[];
+
   ngOnInit() {
-    this.loading = true;
-    this.errorMessage = "";
     this.exService.getExchangeList()
       .subscribe(
-        (response) => {                           //next() callback
+        (response) => {
           console.log('response received')
           this.exchanges = response;
         },
-        (error) => {                              //error() callback
-          console.error('Request failed with error')
-          this.errorMessage = error;
-          this.loading = false;
-        },
-        () => {                                   //complete() callback
-          console.error('Request completed')      //This is actually not needed
-          this.loading = false;
+        (error) => {
+          console.error('Request failed with error', error)
         })
   }
 
-  onRemove(ex:Exchange){
-    this.exService.deleteAsociatedTrades(ex.id).subscribe((t)=>this.exService.deleteExchange(ex)
-    .subscribe((d)=>
-    this.exService.getExchangeList()
-      .subscribe(
-        (response) => {                           //next() callback
-          console.log('response received')
-          this.exchanges = response;
-        })
-        ))
+  onRemove(ex: Exchange) {
+    this.exService.deleteAsociatedTrades(ex.id).subscribe((t) => this.exService.deleteExchange(ex)
+      .subscribe((d) =>
+        this.exService.getExchangeList()
+          .subscribe(
+            (response) => {                           //next() callback
+              console.log('response received')
+              this.exchanges = response;
+            })
+      ))
   }
 
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Crypto } from '../model/Crypto';
-import { DataServiceService } from '../data.service';
+import {Component, OnInit} from '@angular/core';
+import {DataServiceService} from '../data.service';
+import {Crypto} from '../model/Crypto';
 
 @Component({
   selector: 'app-cryptolist',
@@ -9,53 +9,35 @@ import { DataServiceService } from '../data.service';
 })
 export class CryptolistComponent implements OnInit {
 
-  constructor(private cryptoService:DataServiceService) { }
-  cryptos:Crypto[];
-  loading:Boolean;
-  errorMessage=""
-  
+  constructor(private cryptoService: DataServiceService) { }
+  cryptos: Crypto[];
+
   ngOnInit() {
-    this.loading = true;
-    this.errorMessage = "";
     this.cryptoService.getCryptoList()
       .subscribe(
-        (response) => {                           //next() callback
+        (response) => {
           console.log('response received')
           this.cryptos = response;
         },
-        (error) => {                              //error() callback
-          console.error('Request failed with error')
-          this.errorMessage = error;
-          this.loading = false;
-        },
-        () => {                                   //complete() callback
-          console.error('Request completed')      //This is actually not needed
-          this.loading = false;
+        (error) => {
+          console.error('Request failed with error', error)
         })
   }
 
-  onRemove(crypto:Crypto){
-    
+  onRemove(crypto: Crypto) {
+
     this.cryptoService.deleteCrypto(crypto);
-    this.loading = true;
-    this.errorMessage = "";
     this.cryptoService.getCryptoList()
       .subscribe(
-        (response) => {                           //next() callback
+        (response) => {
           console.log('response received')
           this.cryptos = response;
         },
-        (error) => {                              //error() callback
+        (error) => {
           console.error('Request failed with error')
-          this.errorMessage = error;
-          this.loading = false;
-        },
-        () => {                                   //complete() callback
-          console.error('Request completed')      //This is actually not needed
-          this.loading = false;
         })
 
   }
- 
+
 
 }

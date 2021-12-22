@@ -1,42 +1,41 @@
-import { Injectable } from '@angular/core';
-import { Crypto } from './model/Crypto';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {AuthService} from './auth.service';
+import {Crypto} from './model/Crypto';
 
-@Injectable({  providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class DataServiceService {
-  constructor(private http:HttpClient) {
+  headers;
 
+  constructor(private http: HttpClient, private authService: AuthService) {
+    this.headers = this.authService.isAuthenticated()
   }
-   cryptos = [
-    new Crypto("Bitcoin", "BTC", "a description", "a wiki url"),
-    new Crypto("Ethereum", "ETH", "a description", "a wiki url"),
-    new Crypto("Otra crypto", "ABC", "a description", "a wiki url"),
-  ];
-  getCryptoList():Observable<any>{
-    return this.http.get<Crypto[]>('http://localhost:3000/crypto-currencies',  {observe: 'body'})
-  }
-addCrypto(crypto:Crypto){
-  return this.http.post('http://localhost:3000/crypto-currencies', crypto).subscribe()
-}
 
-updateCrypto(idx:String,crypto:Crypto){
-  const body = {"name":crypto.name, "symbol":crypto.symbol, "description":crypto.description, "wiki":crypto.wiki}
-  this.http.put('http://localhost:3000/crypto-currencies/'+idx, body).subscribe(data => {
+  getCryptoList(): Observable<any> {
+    return this.http.get<Crypto[]>('http://localhost:3000/crypto-currencies', {headers: this.headers})
+  }
+  addCrypto(crypto: Crypto) {
+
+    return this.http.post('http://localhost:3000/crypto-currencies', crypto, {headers: this.headers}).subscribe()
+  }
+
+  updateCrypto(idx: String, crypto: Crypto) {
+    const body = {"name": crypto.name, "symbol": crypto.symbol, "description": crypto.description, "wiki": crypto.wiki}
+    this.http.put('http://localhost:3000/crypto-currencies/' + idx, body, {headers: this.headers}).subscribe(data => {
       console.log("PUT Request is successful ", data);
     },
-    error => {
-      console.log("Error", error);
-    })
-}
-
-  deleteCrypto(crypto:Crypto){
-    return this.http.delete('http://localhost:3000/crypto-currencies/'+crypto.id ).subscribe()
+      error => {
+        console.log("Error", error);
+      })
   }
 
-  getCrypto(id:String){
-    return this.http.get<Crypto>('http://localhost:3000/crypto-currencies/'+id )
+  deleteCrypto(crypto: Crypto) {
+    return this.http.delete('http://localhost:3000/crypto-currencies/' + crypto.id, {headers: this.headers}).subscribe()
+  }
+
+  getCrypto(id: String) {
+    return this.http.get<Crypto>('http://localhost:3000/crypto-currencies/' + id, {headers: this.headers})
   }
 
 }
