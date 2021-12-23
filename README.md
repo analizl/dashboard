@@ -1,22 +1,23 @@
 # Cryptocurrency Dashboard
 
 ## Backend
-## Instalar dependencias
 
-npm install
+Instalar dependencias
 
-## Correr la app
+`$ npm install`
 
-npm start
+Correr la app
+
+`$ npm start`
 
 ## Frontend
 
-cd front3/
+`$ cd front3/`
 
-## Instalar dependencias
+Instalar dependencias:
 
-npm install
+`$ npm install`
 
-## Levantar la app
+Levantar la app: 
 
-ng serve -o
+`$ ng serve -o`
