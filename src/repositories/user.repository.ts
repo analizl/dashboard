@@ -1,8 +1,9 @@
 import {Getter, inject} from '@loopback/core';
-import {DefaultCrudRepository, HasOneRepositoryFactory, repository} from '@loopback/repository';
+import {DefaultCrudRepository, HasOneRepositoryFactory, repository, HasManyRepositoryFactory} from '@loopback/repository';
 import {DevelopmentDataSource} from '../datasources';
-import {User, UserCredentials, UserRelations} from '../models';
+import {User, UserCredentials, UserRelations, CryptoCurrency} from '../models';
 import {UserCredentialsRepository} from './user-credentials.repository';
+import {CryptoCurrencyRepository} from './crypto-currency.repository';
 
 export type Credentials = {
   email: string;
@@ -17,10 +18,14 @@ export class UserRepository extends DefaultCrudRepository<
 
   public readonly userCredentials: HasOneRepositoryFactory<UserCredentials, typeof User.prototype.id>;
 
+  public readonly cryptoCurrencies: HasManyRepositoryFactory<CryptoCurrency, typeof User.prototype.id>;
+
   constructor(
-    @inject('datasources.development') dataSource: DevelopmentDataSource, @repository.getter('UserCredentialsRepository') protected userCredentialsRepositoryGetter: Getter<UserCredentialsRepository>,
+    @inject('datasources.development') dataSource: DevelopmentDataSource, @repository.getter('UserCredentialsRepository') protected userCredentialsRepositoryGetter: Getter<UserCredentialsRepository>, @repository.getter('CryptoCurrencyRepository') protected cryptoCurrencyRepositoryGetter: Getter<CryptoCurrencyRepository>,
   ) {
     super(User, dataSource);
+    this.cryptoCurrencies = this.createHasManyRepositoryFactoryFor('cryptoCurrencies', cryptoCurrencyRepositoryGetter,);
+    this.registerInclusionResolver('cryptoCurrencies', this.cryptoCurrencies.inclusionResolver);
     this.userCredentials = this.createHasOneRepositoryFactoryFor('userCredentials', userCredentialsRepositoryGetter);
     this.registerInclusionResolver('userCredentials', this.userCredentials.inclusionResolver);
 

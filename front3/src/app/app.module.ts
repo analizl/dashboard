@@ -12,6 +12,7 @@ import {LoginComponent} from './login/login.component';
 import {NewCryptoComponent} from './new-crypto/new-crypto.component';
 import {NewExchangeComponent} from './new-exchange/new-exchange.component';
 import {NewTradeComponent} from './new-trade/new-trade.component';
+import { RegisterComponent } from './register/register.component';
 
 
 
@@ -25,7 +26,8 @@ import {NewTradeComponent} from './new-trade/new-trade.component';
     DetailExchangeComponent,
     DetailTradeComponent,
     NewTradeComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

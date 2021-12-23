@@ -1,5 +1,6 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {User} from './model/User';
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +19,9 @@ export class AuthService {
       return new HttpHeaders()
         .set('Authorization', 'Bearer ' + localStorage.getItem('SESSIONID'))
     }
+  }
+  register(email: string, password: string) {
+    let body = {"email": email, "password": password, "username": email}
+    return this.http.post<User>('http://localhost:3000/signup', body)
   }
 }

@@ -8,10 +8,12 @@ import {LoginComponent} from './login/login.component';
 import {NewCryptoComponent} from './new-crypto/new-crypto.component';
 import {NewExchangeComponent} from './new-exchange/new-exchange.component';
 import {NewTradeComponent} from './new-trade/new-trade.component';
+import {RegisterComponent} from './register/register.component';
 
 
 const routes: Routes = [
   {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'home', component: CryptolistComponent},
   {path: 'new-crypto', component: NewCryptoComponent},
