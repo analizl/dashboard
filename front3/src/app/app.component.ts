@@ -8,8 +8,8 @@ import {Router} from '@angular/router';
 })
 export class AppComponent {
   title = 'Currency DashBoard';
+  loggeado = false;
   constructor(private router: Router) {
-
   }
   logout() {
     localStorage.clear()

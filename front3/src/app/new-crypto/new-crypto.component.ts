@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
-import { DataServiceService } from '../data.service';
-import { Crypto } from '../model/Crypto';
-import { Route } from '@angular/compiler/src/core';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DataServiceService} from '../data.service';
+import {Crypto} from '../model/Crypto';
 
 @Component({
   selector: 'app-new-crypto',
@@ -12,19 +11,19 @@ import { Route } from '@angular/compiler/src/core';
 })
 export class NewCryptoComponent implements OnInit {
   newCryptoForm: FormGroup;
-  cryptos:Crypto[];
-  pos="";
-  errorMessage="";
-  loading:Boolean;
-  crypto:Crypto;
-  erroresName:String="";
-  erroresSymbol:String="";
-  erroresDescription:String="";
-  erroresWiki:String="";
+  cryptos: Crypto[];
+  pos = "";
+  errorMessage = "";
+  loading: Boolean;
+  crypto: Crypto;
+  erroresName: String = "";
+  erroresSymbol: String = "";
+  erroresDescription: String = "";
+  erroresWiki: String = "";
 
-  constructor(private route: ActivatedRoute , private router:Router,  private service:DataServiceService) { 
-    this.pos=route.snapshot.paramMap.get("pos");
-    if (this.pos){
+  constructor(private route: ActivatedRoute, private router: Router, private service: DataServiceService) {
+    this.pos = route.snapshot.paramMap.get("pos");
+    if (this.pos) {
       this.loading = true;
       this.errorMessage = "";
       this.service.getCryptoList()
@@ -50,8 +49,8 @@ export class NewCryptoComponent implements OnInit {
             console.error('Request completed')      //This is actually not needed
             this.loading = false;
           })
-    }else{
-      this.crypto= new Crypto("","","","");
+    } else {
+      this.crypto = new Crypto("", "", "", "");
       this.newCryptoForm = new FormGroup({
         cryptoName: new FormControl(this.crypto.name),
         cryptoSymbol: new FormControl(this.crypto.symbol),
@@ -62,39 +61,39 @@ export class NewCryptoComponent implements OnInit {
 
 
   }
-  
+
   ngOnInit() {
 
   }
-  
-  onSubmit(){
-    var crypto=new Crypto(this.newCryptoForm.get("cryptoName").value,
-                          this.newCryptoForm.get("cryptoSymbol").value,
-                          this.newCryptoForm.get("cryptoDescription").value,
-                          this.newCryptoForm.get("cryptoWiki").value);
-    
-    if (!this.newCryptoForm.get("cryptoName").value){
-      this.erroresName="Campo requerido"
+
+  onSubmit() {
+    var crypto = new Crypto(this.newCryptoForm.get("cryptoName").value,
+      this.newCryptoForm.get("cryptoSymbol").value,
+      this.newCryptoForm.get("cryptoDescription").value,
+      this.newCryptoForm.get("cryptoWiki").value);
+
+    if (!this.newCryptoForm.get("cryptoName").value) {
+      this.erroresName = "Campo requerido"
     } else {
-      this.erroresName=""
+      this.erroresName = ""
     }
-    if (!this.newCryptoForm.get("cryptoSymbol").value){
-      this.erroresSymbol="Campo requerido"
+    if (!this.newCryptoForm.get("cryptoSymbol").value) {
+      this.erroresSymbol = "Campo requerido"
     } else {
-      this.erroresSymbol=""
-    }if (!this.newCryptoForm.get("cryptoDescription").value){
-      this.erroresDescription="Campo requerido"
+      this.erroresSymbol = ""
+    } if (!this.newCryptoForm.get("cryptoDescription").value) {
+      this.erroresDescription = "Campo requerido"
     } else {
-      this.erroresDescription=""
-    }if (!this.newCryptoForm.get("cryptoWiki").value){
-      this.erroresWiki="Campo requerido"
+      this.erroresDescription = ""
+    } if (!this.newCryptoForm.get("cryptoWiki").value) {
+      this.erroresWiki = "Campo requerido"
     } else {
-      this.erroresWiki=""
+      this.erroresWiki = ""
     }
-                          
-    if(!this.erroresName && !this.erroresSymbol && !this.erroresDescription && !this.erroresWiki) {
-      if (this.crypto.id){
-        this.service.updateCrypto(this.crypto.id,crypto);
+
+    if (!this.erroresName && !this.erroresSymbol && !this.erroresDescription && !this.erroresWiki) {
+      if (this.crypto.id) {
+        this.service.updateCrypto(this.crypto.id, crypto);
       } else {
         this.service.addCrypto(crypto)
       }

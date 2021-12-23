@@ -304,5 +304,4 @@ export class DetailTradeComponent implements OnInit {
     };
     optionCandle && myChartCandle.setOption(optionCandle);
   }
-
 }

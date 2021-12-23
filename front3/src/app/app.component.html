@@ -6,13 +6,19 @@
       <!-- Left links -->
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
+          <a class="nav-link" routerLink="login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="register">Register</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" routerLink="home">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="exchange">Exchanges</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="login" (click)="logout()">Logout</a>
+          <button (click)="logout()">Logout</button>
         </li>
       </ul>
       <!-- Left links -->

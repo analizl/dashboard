@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
-import { ExchangeService } from '../exchange.service';
-import { Exchange } from '../model/Exchange';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ExchangeService} from '../exchange.service';
+import {Exchange} from '../model/Exchange';
 
 @Component({
   selector: 'app-new-exchange',
@@ -12,16 +12,16 @@ import { Exchange } from '../model/Exchange';
 export class NewExchangeComponent implements OnInit {
 
   newExchangeForm: FormGroup;
-  exchanges:Exchange[];
-  pos="";
-  errorMessage="";
-  loading:Boolean;
-  exchange:Exchange;
-  erroresName:String="";
+  exchanges: Exchange[];
+  pos = "";
+  errorMessage = "";
+  loading: Boolean;
+  exchange: Exchange;
+  erroresName: String = "";
 
-  constructor(private route: ActivatedRoute , private router:Router,  private service:ExchangeService) { 
-    this.pos=route.snapshot.paramMap.get("pos");
-    if (this.pos){
+  constructor(private route: ActivatedRoute, private router: Router, private service: ExchangeService) {
+    this.pos = route.snapshot.paramMap.get("pos");
+    if (this.pos) {
       this.loading = true;
       this.errorMessage = "";
       this.service.getExchangeList()
@@ -44,8 +44,8 @@ export class NewExchangeComponent implements OnInit {
             console.error('Request completed')      //This is actually not needed
             this.loading = false;
           })
-    }else{
-      this.exchange= new Exchange("");
+    } else {
+      this.exchange = new Exchange("");
       this.newExchangeForm = new FormGroup({
         exchangeName: new FormControl(this.exchange.name)
       });
@@ -53,24 +53,23 @@ export class NewExchangeComponent implements OnInit {
 
 
   }
-  
+
   ngOnInit() {
 
   }
-  
-  onSubmit(){
-    var exchange=new Exchange(this.newExchangeForm.get("exchangeName").value)
+
+  onSubmit() {
+    var exchange = new Exchange(this.newExchangeForm.get("exchangeName").value)
     //validate fields
-    if (!this.newExchangeForm.get("exchangeName").value){
-      this.erroresName="Campo requerido"
+    if (!this.newExchangeForm.get("exchangeName").value) {
+      this.erroresName = "Campo requerido"
     } else {
-      if (this.exchange.id){
-        this.service.updateExchange(this.exchange.id,exchange);
+      if (this.exchange.id) {
+        this.service.updateExchange(this.exchange.id, exchange);
       } else {
         this.service.addExchange(exchange)
       }
       this.router.navigateByUrl("/exchange")
     }
   }
-
 }
