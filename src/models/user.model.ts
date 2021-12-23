@@ -1,6 +1,7 @@
 import {Entity, model, property, hasOne, hasMany} from '@loopback/repository';
 import {UserCredentials} from './user-credentials.model';
 import {CryptoCurrency} from './crypto-currency.model';
+import {Exchange} from './exchange.model';
 
 @model()
 export class User extends Entity {
@@ -28,6 +29,9 @@ export class User extends Entity {
 
   @hasMany(() => CryptoCurrency)
   cryptoCurrencies: CryptoCurrency[];
+
+  @hasMany(() => Exchange)
+  exchanges: Exchange[];
 
   constructor(data?: Partial<User>) {
     super(data);

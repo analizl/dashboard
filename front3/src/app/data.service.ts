@@ -7,11 +7,10 @@ import {Crypto} from './model/Crypto';
 @Injectable({providedIn: 'root'})
 export class DataServiceService {
   headers;
-
   constructor(private http: HttpClient, private authService: AuthService) {
     this.headers = this.authService.isAuthenticated()
-  }
 
+  }
   getCryptoList(): Observable<any> {
     return this.http.get<Crypto[]>('http://localhost:3000/crypto-currencies', {headers: this.headers})
   }

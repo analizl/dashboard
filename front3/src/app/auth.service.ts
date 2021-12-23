@@ -1,5 +1,6 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {User} from './model/User';
 
 @Injectable({
@@ -18,6 +19,12 @@ export class AuthService {
     if (localStorage.getItem('SESSIONID')) {
       return new HttpHeaders()
         .set('Authorization', 'Bearer ' + localStorage.getItem('SESSIONID'))
+    }
+  }
+  async whoAmI(): Promise<Observable<String>> {
+    let headers = this.isAuthenticated()
+    if (headers) {
+      return this.http.get<String>('http://localhost:3000/whoAmI', {headers: headers})
     }
   }
   register(email: string, password: string) {

@@ -1,5 +1,6 @@
-import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Entity, model, property, hasMany, belongsTo} from '@loopback/repository';
 import {Trade} from './trade.model';
+import {User} from './user.model';
 
 @model({settings: {strict: false}})
 export class Exchange extends Entity {
@@ -19,7 +20,8 @@ export class Exchange extends Entity {
   @hasMany(() => Trade)
   trades: Trade[];
 
-
+  @belongsTo(() => User)
+  userId: number;
   // Indexer property to allow additional data
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [prop: string]: any;

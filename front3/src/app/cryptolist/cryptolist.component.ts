@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../auth.service';
 import {DataServiceService} from '../data.service';
 import {Crypto} from '../model/Crypto';
 
@@ -9,8 +10,9 @@ import {Crypto} from '../model/Crypto';
 })
 export class CryptolistComponent implements OnInit {
 
-  constructor(private cryptoService: DataServiceService) { }
+  constructor(private cryptoService: DataServiceService, private authService: AuthService) { }
   cryptos: Crypto[];
+  whoami;
 
   ngOnInit() {
     this.cryptoService.getCryptoList()
