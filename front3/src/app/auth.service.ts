@@ -31,4 +31,7 @@ export class AuthService {
     let body = {"email": email, "password": password, "username": username}
     return this.http.post<User>('http://localhost:3000/signup', body)
   }
+  getUser(email: string) {
+    return this.http.get<User>('http://localhost:3000/usuarios/' + email)
+  }
 }

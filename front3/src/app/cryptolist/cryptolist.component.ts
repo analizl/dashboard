@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {AuthService} from '../auth.service';
 import {DataServiceService} from '../data.service';
 import {Crypto} from '../model/Crypto';
@@ -10,7 +11,11 @@ import {Crypto} from '../model/Crypto';
 })
 export class CryptolistComponent implements OnInit {
 
-  constructor(private cryptoService: DataServiceService, private authService: AuthService) { }
+  constructor(private router: Router, private cryptoService: DataServiceService, private authService: AuthService) {
+    if (!authService.isAuthenticated()) {
+      router.navigate(['login']);
+    }
+  }
   cryptos: Crypto[];
   whoami;
 

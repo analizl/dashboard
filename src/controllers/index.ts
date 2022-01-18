@@ -13,3 +13,4 @@ export * from './user-crypto-currency.controller';
 export * from './crypto-currency-user.controller';
 export * from './user-exchange.controller';
 export * from './exchange-user.controller';
+export * from './usuario.controller';

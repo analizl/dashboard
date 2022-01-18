@@ -6,28 +6,28 @@
       <!-- Left links -->
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="login">Login</a>
+          <a class="nav-link" routerLink="login" *ngIf="!loggeado">Login</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="register">Register</a>
+          <a class="nav-link" routerLink="register" *ngIf="!loggeado">Register</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="home">Home</a>
+          <a class="nav-link" routerLink="home" *ngIf="loggeado">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="exchange">Exchanges</a>
+          <a class="nav-link" href="exchange" *ngIf="loggeado">Exchanges</a>
         </li>
         <li class="nav-item">
-          <button (click)="logout()">Logout</button>
+          <button (click)="logout()" *ngIf="loggeado">Logout</button>
         </li>
       </ul>
       <!-- Left links -->
+      {{user}}
     </div>
     <!-- Collapsible wrapper -->
   </div>
   <!-- Container wrapper -->
 </nav>
-
 <div class="row justify-content-md-center">
   <h1>{{title}}</h1>
 </div>

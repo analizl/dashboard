@@ -37,8 +37,11 @@ export class RegisterComponent implements OnInit {
             localStorage.setItem("SESSIONID", TOKEN.toString())
             localStorage.getItem("SESSIONID")
 
-            console.log("User is logged in");
-            this.router.navigateByUrl('/');
+            this.authService.getUser(val.email).subscribe(u => {
+              localStorage.setItem("USERNAME", (u.username).toString())
+              console.log("User is logged in");
+              location.href = '/';
+            })
           });
         })
     }
