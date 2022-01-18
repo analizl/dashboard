@@ -171,16 +171,29 @@ export class DetailTradeComponent implements OnInit {
       let max = maximo(diccDataCandle[key])
       let last = diccDataCandle[key].length - 1
       let fechaParseada: String = "";
-      fechaParseada += key[0]
-      fechaParseada += key[1]
-      fechaParseada += '/'
-      fechaParseada += key[2]
-      fechaParseada += key[3]
-      fechaParseada += '/'
-      fechaParseada += key[4]
-      fechaParseada += key[4]
-      fechaParseada += key[4]
-      fechaParseada += key[4]
+      if (key.length == 7) {
+        fechaParseada += key[0]
+        fechaParseada += key[1]
+        fechaParseada += '/'
+        fechaParseada += '0'
+        fechaParseada += key[2]
+        fechaParseada += '/'
+        fechaParseada += key[3]
+        fechaParseada += key[4]
+        fechaParseada += key[5]
+        fechaParseada += key[6]
+      } else {
+        fechaParseada += key[0]
+        fechaParseada += key[1]
+        fechaParseada += '/'
+        fechaParseada += key[2]
+        fechaParseada += key[3]
+        fechaParseada += '/'
+        fechaParseada += key[4]
+        fechaParseada += key[5]
+        fechaParseada += key[6]
+        fechaParseada += key[7]
+      }
       let cadaDia = [fechaParseada, diccDataCandle[key][0], diccDataCandle[key][last.valueOf()], min, max]
       dataCandle.push(cadaDia)
     }

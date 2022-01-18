@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from '../auth.service';
 import {DataServiceService} from '../data.service';
 import {ExchangeService} from '../exchange.service';
 import {Crypto} from '../model/Crypto';
@@ -26,8 +27,9 @@ export class NewTradeComponent implements OnInit {
   erroresCryptoFrom: String = "";
   erroresCryptoTo: String = "";
   erroresScript: String = "";
+  id;
 
-  constructor(private exchangeService: ExchangeService, private tradeService: TradeService, private route: ActivatedRoute, private router: Router, private cryptoService: DataServiceService) {
+  constructor(private exchangeService: ExchangeService, private tradeService: TradeService, private route: ActivatedRoute, private router: Router, private cryptoService: DataServiceService, private authService: AuthService) {
     this.exId = parseInt(route.snapshot.paramMap.get("idExchange"));
     console.log(this.exId)
     this.trade = new Trade("", 0, 0, 0, 0);
@@ -39,8 +41,11 @@ export class NewTradeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.cryptoService.getCryptoList().subscribe((response) => {this.cryptos = response;})
-    this.exchangeService.getExchangeList().subscribe(e => this.exchanges = e)
+    this.authService.getUser(localStorage.getItem("EMAIL")).subscribe(u => {
+      this.id = u.id;
+      this.cryptoService.getMyCryptoList(this.id).subscribe((response) => {this.cryptos = response;})
+      this.exchangeService.getMyExchangeList(this.id).subscribe(e => this.exchanges = e)
+    })
   }
 
   onSubmit() {
