@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit {
 
     this.form = this.fb.group({
       email: [''], //, Validators.required
+      username: [''], //, Validators.required
       password: [''] //, Validators.required
     });
   }
@@ -28,8 +29,8 @@ export class RegisterComponent implements OnInit {
   register() {
     const val = this.form.value;
 
-    if (val.email && val.password) {
-      this.authService.register(val.email, val.password)
+    if (val.email && val.password && val.username) {
+      this.authService.register(val.email, val.username, val.password)
         .subscribe((res) => {
           this.authService.login(val.email, val.password).subscribe((token) => {
             const TOKEN = Object.values(token)

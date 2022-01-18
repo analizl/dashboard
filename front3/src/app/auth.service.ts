@@ -27,8 +27,8 @@ export class AuthService {
       return this.http.get<String>('http://localhost:3000/whoAmI', {headers: headers})
     }
   }
-  register(email: string, password: string) {
-    let body = {"email": email, "password": password, "username": email}
+  register(email: string, username: string, password: string) {
+    let body = {"email": email, "password": password, "username": username}
     return this.http.post<User>('http://localhost:3000/signup', body)
   }
 }
