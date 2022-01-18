@@ -23,7 +23,7 @@ export class ExchangeService {
   }
 
   updateExchange(idx: String, ex: Exchange) {
-    const body = {"name": ex.name}
+    const body = {"name": ex.name, "userId": ex.userId}
     this.http.put('http://localhost:3000/exchanges/' + idx, body, {headers: this.headers}).subscribe(data => {
       console.log("PUT Request is successful ", data);
     },

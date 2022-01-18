@@ -1,8 +1,9 @@
 export class Exchange {
-	id:String;
+	id: String;
 	name: String;
-	constructor(name: String){
-	  this.name = name;
+	userId: Number;
+	constructor(name: String, userId: Number) {
+		this.name = name;
+		this.userId = userId
 	}
-  }
-  
+}

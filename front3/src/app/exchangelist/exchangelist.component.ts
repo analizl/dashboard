@@ -32,7 +32,7 @@ export class ExchangelistComponent implements OnInit {
   onRemove(ex: Exchange) {
     this.exService.deleteAsociatedTrades(ex.id).subscribe((t) => this.exService.deleteExchange(ex)
       .subscribe((d) =>
-        this.exService.getExchangeList()
+        this.exService.getMyExchangeList(this.whoami)
           .subscribe(
             (response) => {                           //next() callback
               console.log('response received')
