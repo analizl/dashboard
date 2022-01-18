@@ -17,6 +17,7 @@ import {model, property, repository} from '@loopback/repository';
 import {
   get,
   getModelSchemaRef,
+  param,
   post,
   requestBody,
   SchemaObject
@@ -24,6 +25,7 @@ import {
 import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 import {genSalt, hash} from 'bcryptjs';
 import _ from 'lodash';
+import {User as Usuario} from '../models';
 
 @model()
 export class NewUserRequest extends User {
@@ -156,5 +158,23 @@ export class UserController {
     await this.userRepository.userCredentials(savedUser.id).create({password});
 
     return savedUser;
+  }
+
+  @get('/usuarios/{email}', {
+    responses: {
+      '200': {
+        description: 'User model instance',
+        content: {
+          'application/json': {
+            schema: {'x-ts-type': Usuario},
+          },
+        },
+      },
+    }
+  })
+  async findByEmail(
+    @param.path.string('email') email: string
+  ): Promise<any> {
+    return this.userRepository.findOne({where: {email: email}});
   }
 }
