@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from '../auth.service';
 import {DataServiceService} from '../data.service';
 import {Crypto} from '../model/Crypto';
 
@@ -10,7 +11,12 @@ import {Crypto} from '../model/Crypto';
   styleUrls: ['./new-crypto.component.css']
 })
 export class NewCryptoComponent implements OnInit {
-  newCryptoForm: FormGroup;
+  newCryptoForm: FormGroup = new FormGroup({
+    cryptoName: new FormControl(),
+    cryptoSymbol: new FormControl(),
+    cryptoDescription: new FormControl(),
+    cryptoWiki: new FormControl()
+  });
   cryptos: Crypto[];
   pos = "";
   errorMessage = "";
@@ -20,46 +26,51 @@ export class NewCryptoComponent implements OnInit {
   erroresSymbol: String = "";
   erroresDescription: String = "";
   erroresWiki: String = "";
+  id;
 
-  constructor(private route: ActivatedRoute, private router: Router, private service: DataServiceService) {
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router, private service: DataServiceService) {
     this.pos = route.snapshot.paramMap.get("pos");
-    if (this.pos) {
-      this.loading = true;
-      this.errorMessage = "";
-      this.service.getCryptoList()
-        .subscribe(
-          (response) => {                           //next() callback
-            console.log('response received')
-            this.cryptos = response;
-            this.crypto = this.cryptos[this.pos];
-            console.log(this.cryptos[this.pos]);
-            this.newCryptoForm = new FormGroup({
-              cryptoName: new FormControl(this.crypto.name),
-              cryptoSymbol: new FormControl(this.crypto.symbol),
-              cryptoDescription: new FormControl(this.crypto.description),
-              cryptoWiki: new FormControl(this.crypto.wiki)
-            });
-          },
-          (error) => {                              //error() callback
-            console.error('Request failed with error')
-            this.errorMessage = error;
-            this.loading = false;
-          },
-          () => {                                   //complete() callback
-            console.error('Request completed')      //This is actually not needed
-            this.loading = false;
-          })
-    } else {
-      this.crypto = new Crypto("", "", "", "");
-      this.newCryptoForm = new FormGroup({
-        cryptoName: new FormControl(this.crypto.name),
-        cryptoSymbol: new FormControl(this.crypto.symbol),
-        cryptoDescription: new FormControl(this.crypto.description),
-        cryptoWiki: new FormControl(this.crypto.wiki)
-      });
-    }
+    this.authService.getUser(localStorage.getItem("EMAIL")).subscribe(u => {
+      this.id = u.id;
 
+      if (this.pos) {
+        this.loading = true;
+        this.errorMessage = "";
+        this.service.getMyCryptoList(this.id)
+          .subscribe(
+            (response) => {                           //next() callback
+              console.log('response received')
+              this.cryptos = response;
+              this.crypto = this.cryptos[this.pos];
 
+              this.newCryptoForm = new FormGroup({
+                cryptoName: new FormControl(this.crypto.name),
+                cryptoSymbol: new FormControl(this.crypto.symbol),
+                cryptoDescription: new FormControl(this.crypto.description),
+                cryptoWiki: new FormControl(this.crypto.wiki),
+              });
+
+            },
+            (error) => {                              //error() callback
+              console.error('Request failed with error')
+              this.errorMessage = error;
+              this.loading = false;
+            },
+            () => {                                   //complete() callback
+              console.error('Request completed')      //This is actually not needed
+              this.loading = false;
+            })
+      } else {
+        this.crypto = new Crypto("", "", "", "", 0);
+        this.newCryptoForm = new FormGroup({
+          cryptoName: new FormControl(this.crypto.name),
+          cryptoSymbol: new FormControl(this.crypto.symbol),
+          cryptoDescription: new FormControl(this.crypto.description),
+          cryptoWiki: new FormControl(this.crypto.wiki)
+        });
+      }
+
+    })
   }
 
   ngOnInit() {
@@ -67,10 +78,12 @@ export class NewCryptoComponent implements OnInit {
   }
 
   onSubmit() {
+
     var crypto = new Crypto(this.newCryptoForm.get("cryptoName").value,
       this.newCryptoForm.get("cryptoSymbol").value,
       this.newCryptoForm.get("cryptoDescription").value,
-      this.newCryptoForm.get("cryptoWiki").value);
+      this.newCryptoForm.get("cryptoWiki").value,
+      this.id)
 
     if (!this.newCryptoForm.get("cryptoName").value) {
       this.erroresName = "Campo requerido"
@@ -93,6 +106,7 @@ export class NewCryptoComponent implements OnInit {
 
     if (!this.erroresName && !this.erroresSymbol && !this.erroresDescription && !this.erroresWiki) {
       if (this.crypto.id) {
+        console.log(crypto)
         this.service.updateCrypto(this.crypto.id, crypto);
       } else {
         this.service.addCrypto(crypto)

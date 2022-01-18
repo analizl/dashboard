@@ -12,6 +12,9 @@ export class ExchangeService {
   constructor(private http: HttpClient, private authService: AuthService) {
     this.headers = this.authService.isAuthenticated()
   }
+  getMyExchangeList(id: number): Observable<any> {
+    return this.http.get<Exchange[]>('http://localhost:3000/users/' + id + '/exchanges', {headers: this.headers})
+  }
   getExchangeList(): Observable<any> {
     return this.http.get<Exchange[]>('http://localhost:3000/exchanges', {headers: this.headers})
   }

@@ -1,14 +1,15 @@
 export class Crypto {
-	id:String;
+	id: String;
 	name: String;
 	symbol: String;
 	description: String;
 	wiki: String;
-	constructor(name: String, symbol:String, description:String, wiki:String){
-	  this.name = name;
-	  this.symbol = symbol;
-	  this.description = description;
-	  this.wiki = wiki;
+	userId: Number;
+	constructor(name: String, symbol: String, description: String, wiki: String, userId: Number) {
+		this.name = name;
+		this.symbol = symbol;
+		this.description = description;
+		this.wiki = wiki;
+		this.userId = userId;
 	}
-  }
-  
+}

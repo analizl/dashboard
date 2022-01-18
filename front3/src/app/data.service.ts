@@ -11,6 +11,9 @@ export class DataServiceService {
     this.headers = this.authService.isAuthenticated()
 
   }
+  getMyCryptoList(id: number): Observable<any> {
+    return this.http.get<Crypto[]>('http://localhost:3000/users/' + id + '/crypto-currencies', {headers: this.headers})
+  }
   getCryptoList(): Observable<any> {
     return this.http.get<Crypto[]>('http://localhost:3000/crypto-currencies', {headers: this.headers})
   }
@@ -20,7 +23,7 @@ export class DataServiceService {
   }
 
   updateCrypto(idx: String, crypto: Crypto) {
-    const body = {"name": crypto.name, "symbol": crypto.symbol, "description": crypto.description, "wiki": crypto.wiki}
+    const body = {"name": crypto.name, "symbol": crypto.symbol, "description": crypto.description, "wiki": crypto.wiki, "userId": crypto.userId}
     this.http.put('http://localhost:3000/crypto-currencies/' + idx, body, {headers: this.headers}).subscribe(data => {
       console.log("PUT Request is successful ", data);
     },

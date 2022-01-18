@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
             const TOKEN = Object.values(token)
             localStorage.setItem("SESSIONID", TOKEN.toString())
             localStorage.getItem("SESSIONID")
+            localStorage.setItem("EMAIL", (val.email).toString())
 
             this.authService.getUser(val.email).subscribe(u => {
               localStorage.setItem("USERNAME", (u.username).toString())

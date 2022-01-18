@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../auth.service';
 import {ExchangeService} from '../exchange.service';
 import {Exchange} from '../model/Exchange';
 
@@ -9,19 +10,23 @@ import {Exchange} from '../model/Exchange';
 })
 export class ExchangelistComponent implements OnInit {
 
-  constructor(private exService: ExchangeService) { }
+  constructor(private exService: ExchangeService, private authService: AuthService) { }
   exchanges: Exchange[];
+  whoami;
 
   ngOnInit() {
-    this.exService.getExchangeList()
-      .subscribe(
-        (response) => {
-          console.log('response received')
-          this.exchanges = response;
-        },
-        (error) => {
-          console.error('Request failed with error', error)
-        })
+    this.authService.getUser(localStorage.getItem("EMAIL")).subscribe(u => {
+      this.whoami = u.id;
+      this.exService.getMyExchangeList(this.whoami)
+        .subscribe(
+          (response) => {
+            console.log('response received')
+            this.exchanges = response;
+          },
+          (error) => {
+            console.error('Request failed with error', error)
+          })
+    })
   }
 
   onRemove(ex: Exchange) {

@@ -20,21 +20,25 @@ export class CryptolistComponent implements OnInit {
   whoami;
 
   ngOnInit() {
-    this.cryptoService.getCryptoList()
-      .subscribe(
-        (response) => {
-          console.log('response received')
-          this.cryptos = response;
-        },
-        (error) => {
-          console.error('Request failed with error', error)
-        })
+    this.authService.getUser(localStorage.getItem("EMAIL")).subscribe(u => {
+      this.whoami = u.id;
+      this.cryptoService.getMyCryptoList(this.whoami)
+        .subscribe(
+          (response) => {
+            console.log('response received')
+            this.cryptos = response;
+          },
+          (error) => {
+            console.error('Request failed with error', error)
+          })
+    })
+
   }
 
   onRemove(crypto: Crypto) {
 
     this.cryptoService.deleteCrypto(crypto);
-    this.cryptoService.getCryptoList()
+    this.cryptoService.getMyCryptoList(this.whoami)
       .subscribe(
         (response) => {
           console.log('response received')
