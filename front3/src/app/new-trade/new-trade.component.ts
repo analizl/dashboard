@@ -30,6 +30,9 @@ export class NewTradeComponent implements OnInit {
   id;
 
   constructor(private exchangeService: ExchangeService, private tradeService: TradeService, private route: ActivatedRoute, private router: Router, private cryptoService: DataServiceService, private authService: AuthService) {
+    if (!authService.isAuthenticated()) {
+      router.navigate(['login']);
+    }
     this.exId = parseInt(route.snapshot.paramMap.get("idExchange"));
     console.log(this.exId)
     this.trade = new Trade("", 0, 0, 0, 0);

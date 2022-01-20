@@ -10,19 +10,19 @@ import {AuthService} from './auth.service';
 export class AppComponent implements OnInit {
   title = 'Currency DashBoard';
   loggeado = false;
-  user = '';
+  welcome = '';
 
   constructor(private router: Router, private authService: AuthService) {
   }
   ngOnInit(): void {
     if (localStorage.getItem('SESSIONID')) {
-      this.user = 'Bienvenido ' + localStorage.getItem("USERNAME")
+      this.welcome = 'Bienvenido ' + localStorage.getItem("USERNAME")
       this.loggeado = true
     }
   }
   logout() {
     localStorage.clear()
-    this.user = ''
+    this.welcome = ''
     this.loggeado = false
     this.router.navigateByUrl('/login');
   }

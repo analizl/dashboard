@@ -1,32 +1,31 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <!-- Container wrapper -->
-  <div class="container-fluid">
-    <!-- Collapsible wrapper -->
-    <div class="collapse navbar-collapse justify-content-center" id="navbarCenteredExample">
-      <!-- Left links -->
-      <ul class="navbar-nav mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="login" *ngIf="!loggeado">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="register" *ngIf="!loggeado">Register</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="home" *ngIf="loggeado">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="exchange" *ngIf="loggeado">Exchanges</a>
-        </li>
-        <li class="nav-item">
-          <button (click)="logout()" *ngIf="loggeado">Logout</button>
-        </li>
-      </ul>
-      <!-- Left links -->
-      {{user}}
+
+  <!-- Collapsible wrapper -->
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <!-- Left links -->
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="login" *ngIf="!loggeado">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="register" *ngIf="!loggeado">Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="home" *ngIf="loggeado">Cryptos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="exchange" *ngIf="loggeado">Exchanges</a>
+      </li>
+
+    </ul>
+    <!-- Left links -->
+    <div class="form-inline my-2 my-lg-0">
+      <div class="mr-sm-2">{{welcome}}</div>
+      <button class="btn btn-light my-2 my-sm-0 btn-sm" (click)="logout()" *ngIf="loggeado">Logout</button>
     </div>
-    <!-- Collapsible wrapper -->
   </div>
-  <!-- Container wrapper -->
+  <!-- Collapsible wrapper -->
+
 </nav>
 <div class="row justify-content-md-center">
   <h1>{{title}}</h1>

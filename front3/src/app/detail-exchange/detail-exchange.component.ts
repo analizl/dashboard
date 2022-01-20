@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AuthService} from '../auth.service';
 import {DataServiceService} from '../data.service';
 import {ExchangeService} from '../exchange.service';
 import {Crypto} from '../model/Crypto';
@@ -18,7 +19,10 @@ export class DetailExchangeComponent implements OnInit {
   idEx: String;
   cryptos: Crypto[];
 
-  constructor(private tradeService: TradeService, private route: ActivatedRoute, private router: Router, private exService: ExchangeService, private cryptoService: DataServiceService) {
+  constructor(private authService: AuthService, private tradeService: TradeService, private route: ActivatedRoute, private router: Router, private exService: ExchangeService, private cryptoService: DataServiceService) {
+    if (!authService.isAuthenticated()) {
+      router.navigate(['login']);
+    }
     this.idEx = route.snapshot.paramMap.get("id");
 
 

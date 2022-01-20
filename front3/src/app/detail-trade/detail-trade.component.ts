@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as echarts from 'echarts';
+import {AuthService} from '../auth.service';
 import {DataServiceService} from '../data.service';
 import {ExchangeService} from '../exchange.service';
 import {Exchange} from '../model/Exchange';
@@ -21,7 +22,10 @@ export class DetailTradeComponent implements OnInit {
   cryptoFrom: String;
   cryptoTo: String;
 
-  constructor(private route: ActivatedRoute, private router: Router, private tradeService: TradeService, private exService: ExchangeService, private cryptoService: DataServiceService) {
+  constructor(private route: ActivatedRoute, private router: Router, private tradeService: TradeService, private exService: ExchangeService, private cryptoService: DataServiceService, private authService: AuthService) {
+    if (!authService.isAuthenticated()) {
+      router.navigate(['login']);
+    }
     this.idT = route.snapshot.paramMap.get("id");
 
   }

@@ -29,6 +29,9 @@ export class NewCryptoComponent implements OnInit {
   id;
 
   constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router, private service: DataServiceService) {
+    if (!authService.isAuthenticated()) {
+      router.navigate(['login']);
+    }
     this.pos = route.snapshot.paramMap.get("pos");
     this.authService.getUser(localStorage.getItem("EMAIL")).subscribe(u => {
       this.id = u.id;

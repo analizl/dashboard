@@ -12,10 +12,10 @@ export class RegisterComponent implements OnInit {
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router) {
-
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    if (authService.isAuthenticated()) {
+      router.navigate(['home']);
+    }
     this.form = this.fb.group({
       email: [''], //, Validators.required
       username: [''], //, Validators.required

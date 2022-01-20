@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {AuthService} from '../auth.service';
 import {ExchangeService} from '../exchange.service';
 import {Exchange} from '../model/Exchange';
@@ -10,7 +11,11 @@ import {Exchange} from '../model/Exchange';
 })
 export class ExchangelistComponent implements OnInit {
 
-  constructor(private exService: ExchangeService, private authService: AuthService) { }
+  constructor(private exService: ExchangeService, private authService: AuthService, private router: Router) {
+    if (!authService.isAuthenticated()) {
+      router.navigate(['login']);
+    }
+  }
   exchanges: Exchange[];
   whoami;
 

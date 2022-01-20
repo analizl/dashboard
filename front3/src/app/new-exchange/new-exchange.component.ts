@@ -24,6 +24,9 @@ export class NewExchangeComponent implements OnInit {
   id;
 
   constructor(private route: ActivatedRoute, private router: Router, private service: ExchangeService, private authService: AuthService) {
+    if (!authService.isAuthenticated()) {
+      router.navigate(['login']);
+    }
     this.pos = route.snapshot.paramMap.get("pos");
     this.authService.getUser(localStorage.getItem("EMAIL")).subscribe(u => {
       this.id = u.id;
