@@ -46,6 +46,65 @@ export class TradePriceController {
     return this.tradeRepository.prices(id).find(filter);
   }
 
+  @get('//trades/{id}/prices/{range}', {
+    responses: {
+      '200': {
+        description: 'Array of Trade has many Price in Range',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(Price)},
+          },
+        },
+      },
+    }
+  })
+  async findByRange(
+    @param.path.number('id') id: number,
+    @param.path.number('range') range: number,
+    @param.query.object('filter') filter?: Filter<Price>,
+  ): Promise<Price[]> {
+    let ahora = new Date()
+    let ini = new Date()
+    if (range == 1) {
+      let aux = (ahora.getHours()) - 1
+      //verificar si es el principio de un día
+      ini.setHours(aux)
+    } else {
+      if (range == 4) {
+        let aux = (ahora.getHours()) - 4
+        //verificar si es el principio de un dia
+        ini.setHours(aux)
+      } else {
+        if (range == 24) {
+          let aux = (ahora.getDate()) - 1
+          //
+          ini.setDate(aux)
+        } else {
+          if (range == 7) {
+            //
+            let aux = (ahora.getDate()) - 7
+            ini.setDate(aux)
+          } else {
+            if (range == 30) {
+              //
+              let aux = (ahora.getMonth()) - 1
+              ini.setDate(aux)
+            } else {
+              if (range == 365) {
+                //
+                let aux = (ahora.getFullYear()) - 1
+                ini.setFullYear(aux)
+              }
+            }
+          }
+        }
+      }
+    }
+    return this.tradeRepository.prices(id).find({
+      where: {and: [{date: {gt: ini}}, {date: {lt: ahora}}]}
+    });
+  }
+
   @post('/trades/{id}/prices', {
     responses: {
       '200': {
