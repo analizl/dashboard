@@ -20,6 +20,9 @@ export class TradeService {
   getPricesList(idT: String) {
     return this.http.get<Price[]>('http://localhost:3000/trades/' + idT + '/prices', {headers: this.headers})
   }
+  getPricesListRange(idT: String, r: number) {
+    return this.http.get<Price[]>('http://localhost:3000/trades/' + idT + '/prices/' + r, {headers: this.headers})
+  }
 
   getTradesList() {
     return this.http.get<Trade[]>('http://localhost:3000/trades/', {headers: this.headers})

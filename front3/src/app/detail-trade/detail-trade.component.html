@@ -1,6 +1,19 @@
 <h3>Exchange: <small>{{exchange.name}}</small> </h3>
 <h3>From: <small>{{cryptoFrom}}</small> - To: <small>{{cryptoTo}}</small> </h3>
+<div>
+  <button (click)="dibujar(1)">Última hora</button>
+  <button (click)="dibujar(4)">Últimas 4 horas</button>
+  <button (click)="dibujar(24)">Últimas 24 horas</button>
+  <button (click)="dibujar(7)">Última semana</button>
+  <button (click)="dibujar(30)">Último mes</button>
+  <button (click)="dibujar(365)">Último año</button>
+
+</div>
+<hr>
 <div class="row">
-  <div id="main" class="col md-6" style="width: 600px;height:400px;"></div>
+  <div id="main" name="main" class="col md-6" style="width: 600px;height:400px;"></div>
   <div id="candleChart" class="col md-6" style="width: 600px;height:400px;"></div>
+
+
+
 </div>
