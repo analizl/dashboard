@@ -3,7 +3,7 @@ import {repository} from '@loopback/repository';
 import {Price, Trade} from '../models';
 import {ExchangeRepository, PriceRepository, TradeRepository} from '../repositories';
 import {LoggingBindings, WinstonLogger} from '@loopback/logging';
-import {inject} from '@loopback/core';
+import {inject, JSONObject} from '@loopback/core';
 
 @cronJob()
 export class MyCronJob extends CronJob {
@@ -24,11 +24,15 @@ export class MyCronJob extends CronJob {
             const price: Price = new Price()
             price.date = (new Date()).toString()
             const exchange = await this.exchangeRepository.findById(trade.exchange_id);
-            const script_exchange = eval(exchange.script)
+
+            //const script_exchange = eval(exchange.script)
             const script_trade = eval(trade.script)
-            price.price = script_trade(script_exchange)
+            //price.price = script_trade(script_exchange)
+            const temp=(await script_trade)
+            price.price = temp.price
             price.trade_id = trade.id ?? 0
             await this.priceRepository.create(price)
+
             this.logger.log('info','success');
           } catch (e){
             this.logger.log('info','error');

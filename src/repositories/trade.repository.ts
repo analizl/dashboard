@@ -1,9 +1,10 @@
 import {inject, Getter} from '@loopback/core';
-import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
+import {DefaultCrudRepository, repository, BelongsToAccessor, HasManyRepositoryFactory} from '@loopback/repository';
 import {DevelopmentDataSource} from '../datasources';
-import {Trade, TradeRelations, Exchange, CryptoCurrency} from '../models';
+import {Trade, TradeRelations, Exchange, CryptoCurrency, Price} from '../models';
 import {ExchangeRepository} from './exchange.repository';
 import {CryptoCurrencyRepository} from './crypto-currency.repository';
+import {PriceRepository} from './price.repository';
 
 export class TradeRepository extends DefaultCrudRepository<
   Trade,
@@ -17,10 +18,13 @@ export class TradeRepository extends DefaultCrudRepository<
 
   public readonly trade_currency_to: BelongsToAccessor<CryptoCurrency, typeof Trade.prototype.id>;
 
+  public readonly prices: HasManyRepositoryFactory<Price, typeof Trade.prototype.id>;
+
   constructor(
-    @inject('datasources.development') dataSource: DevelopmentDataSource, @repository.getter('ExchangeRepository') protected exchangeRepositoryGetter: Getter<ExchangeRepository>, @repository.getter('CryptoCurrencyRepository') protected cryptoCurrencyRepositoryGetter: Getter<CryptoCurrencyRepository>,
+    @inject('datasources.development') dataSource: DevelopmentDataSource, @repository.getter('ExchangeRepository') protected exchangeRepositoryGetter: Getter<ExchangeRepository>, @repository.getter('CryptoCurrencyRepository') protected cryptoCurrencyRepositoryGetter: Getter<CryptoCurrencyRepository>, @repository.getter('PriceRepository') protected priceRepositoryGetter: Getter<PriceRepository>,
   ) {
     super(Trade, dataSource);
+    this.prices = this.createHasManyRepositoryFactoryFor('prices', priceRepositoryGetter,);
     this.trade_currency_to = this.createBelongsToAccessorFor('trade_currency_to', cryptoCurrencyRepositoryGetter,);
     this.registerInclusionResolver('trade_currency_to', this.trade_currency_to.inclusionResolver);
     this.trade_currency_from = this.createBelongsToAccessorFor('trade_currency_from', cryptoCurrencyRepositoryGetter,);

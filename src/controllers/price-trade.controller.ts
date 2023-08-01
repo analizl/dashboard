@@ -1,17 +1,18 @@
+import {authenticate} from '@loopback/authentication';
 import {
-  repository,
+  repository
 } from '@loopback/repository';
 import {
-  param,
   get,
-  getModelSchemaRef,
+  getModelSchemaRef, param
 } from '@loopback/rest';
 import {
   Price,
-  Trade,
+  Trade
 } from '../models';
 import {PriceRepository} from '../repositories';
 
+@authenticate('jwt')
 export class PriceTradeController {
   constructor(
     @repository(PriceRepository)

@@ -1,17 +1,22 @@
+import {AuthenticationComponent} from '@loopback/authentication';
+import {
+  JWTAuthenticationComponent
+} from '@loopback/authentication-jwt';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig, createBindingFromClass} from '@loopback/core';
-import {
-  RestExplorerBindings,
-  RestExplorerComponent,
-} from '@loopback/rest-explorer';
+import {CronComponent} from '@loopback/cron';
+import {LoggingBindings, LoggingComponent} from '@loopback/logging';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
+import {
+  RestExplorerBindings,
+  RestExplorerComponent
+} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
-import {MySequence} from './sequence';
-import {CronComponent} from '@loopback/cron';
 import {MyCronJob} from './jobs/MyCronJob';
-import {LoggingBindings, LoggingComponent} from '@loopback/logging';
+import {MySequence} from './sequence';
+//import {DevelopmentDataSource} from './datasources';
 
 export {ApplicationConfig};
 
@@ -50,5 +55,13 @@ export class DashboardApplication extends BootMixin(
     this.component(CronComponent);
     this.add(createBindingFromClass(MyCronJob));
     this.component(LoggingComponent);
+
+    // Auth + JWT
+    // Mount authentication system
+    this.component(AuthenticationComponent);
+    // Mount jwt component
+    this.component(JWTAuthenticationComponent);
+    // Bind datasource
+    //this.dataSource(DevelopmentDataSource, UserServiceBindings.DATASOURCE_NAME);
   }
 }

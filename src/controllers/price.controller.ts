@@ -1,34 +1,30 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
-import {Price, Trade} from '../models';
-import {PriceRepository, TradeRepository, ExchangeRepository} from '../repositories';
+import {Price} from '../models';
+import {ExchangeRepository, PriceRepository, TradeRepository} from '../repositories';
 
+@authenticate('jwt')
 export class PriceController {
   constructor(
     @repository(PriceRepository)
-    public priceRepository : PriceRepository,
+    public priceRepository: PriceRepository,
     @repository(TradeRepository)
-    public tradeRepository : TradeRepository,
+    public tradeRepository: TradeRepository,
     @repository(ExchangeRepository)
-    public exchangeRepository : ExchangeRepository
-  ) {}
+    public exchangeRepository: ExchangeRepository
+  ) { }
 
   @post('/prices')
   @response(200, {
@@ -46,15 +42,15 @@ export class PriceController {
         },
       },
     })
-    price: Omit<Price, 'id'|'date'|'price'>,
+    price: Omit<Price, 'id' | 'date' | 'price'>,
   ): Promise<Price> {
-    const date:Date = new Date();
+    const date: Date = new Date();
     const trade = await this.tradeRepository.findById(price.trade_id);
-    price.date=date;
+    price.date = date;
     const exchange = await this.exchangeRepository.findById(trade.exchange_id);
-    const script_exchange=eval(exchange.script)
-    const script_trade=eval(trade.script)
-    price.price=script_trade(script_exchange)
+    const script_exchange = eval(exchange.script)
+    const script_trade = eval(trade.script)
+    price.price = script_trade(script_exchange)
     return this.priceRepository.create(price)
   }
 

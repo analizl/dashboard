@@ -1,0 +1,19 @@
+<h3>Exchange: <small>{{exchange.name}}</small> </h3>
+<h3>From: <small>{{cryptoFrom}}</small> - To: <small>{{cryptoTo}}</small> </h3>
+<div class="row justify-content-md-center">
+  <button class="btn btn-primary" (click)="dibujar(1)">Última hora</button>
+  <button class="btn btn-primary" (click)="dibujar(4)">Últimas 4 horas</button>
+  <button class="btn btn-primary" (click)="dibujar(24)">Últimas 24 horas</button>
+  <button class="btn btn-primary" (click)="dibujar(7)">Última semana</button>
+  <button class="btn btn-primary" (click)="dibujar(30)">Último mes</button>
+  <button class="btn btn-primary" (click)="dibujar(365)">Último año</button>
+
+</div>
+<hr>
+<div class="row justify-content-md-center">
+  <div id="main" name="main" class="col-md-8" style="width: 600px;height:400px;"></div>
+
+</div>
+<div class="row justify-content-md-center">
+  <div id="candleChart" class="col-md-8" style="width: 600px;height:400px;"></div>
+</div>

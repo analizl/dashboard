@@ -1,6 +1,9 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
 import {Exchange} from './exchange.model';
 import {CryptoCurrency} from './crypto-currency.model';
+import {Price} from './price.model';
+import {builtinParsers} from '@loopback/rest';
+import text = builtinParsers.text;
 
 @model({settings: {strict: false}})
 export class Trade extends Entity {
@@ -12,7 +15,10 @@ export class Trade extends Entity {
   id?: number;
 
   @property({
-    type: 'string',
+    type: 'String',
+    mysql: {
+      dataType: 'text',
+    },
     required: true,
   })
   script: string;
@@ -24,6 +30,14 @@ export class Trade extends Entity {
 
   @belongsTo(() => CryptoCurrency, {name: 'trade_currency_to'})
   currency_to_id: number;
+
+  @property({
+    type: 'number',
+  })
+  exchangeId?: number;
+
+  @hasMany(() => Price, {keyTo: 'trade_id'})
+  prices: Price[];
   // Define well-known properties here
 
   // Indexer property to allow additional data

@@ -1,0 +1,29 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="newCryptoForm"> 
+
+    <div class="form-group">
+       <label for="cryptoName">Crypto name</label>
+       <p *ngIf="erroresName" class="alert alert-danger"><small>{{erroresName}}</small></p>
+       <input type="text" formControlName="cryptoName" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="cryptoSymbol">Crypto symbol</label>
+        <p *ngIf="erroresSymbol" class="alert alert-danger"><small>{{erroresSymbol}}</small></p>
+        <input type="text" formControlName="cryptoSymbol" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="cryptoDescription">Description</label>
+        <p *ngIf="erroresDescription" class="alert alert-danger"><small>{{erroresDescription}}</small></p>
+        <input type="text" formControlName="cryptoDescription" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="cryptoWiki">Wikipedia URL</label>
+        <p *ngIf="erroresWiki" class="alert alert-danger"><small>{{erroresWiki}}</small></p>
+        <input type="text" formControlName="cryptoWiki" class="form-control">
+    </div>
+ 
+   <div class="form-group">
+       <button class="btn btn-primary" type="submit">Save</button>    
+       <a routerLink="/home" class="btn btn-link">Cancel</a>
+   </div>
+
+</form>

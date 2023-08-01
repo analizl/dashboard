@@ -1,10 +1,18 @@
+const getContent = function(url) {
+  return new Promise((resolve, reject) => {
+    const lib = url.startsWith('https') ? require('https') : require('http');
+    const request = lib.get(url, (response) => {
+      if (response.statusCode < 200 || response.statusCode > 299) {
+        reject(new Error('Failed to load page, status code: ' + response.statusCode));
+      }
+      const body = [];
+      response.on('data', (chunk) => body.push(chunk));
+      response.on('end', () => resolve(body.join('')));
+    });
+    request.on('error', (err) => reject(err))
+  })
+};
 
-let scriptExchange = 'function getCotizacionBinance() { return 1; }';
-let scriptTrade = 'function getCotizacion() { return getCotizacionBinance(); }';
-
-eval(scriptExchange);
-eval(scriptTrade);
-
-let cotizacion = getCotizacion();
-console.log(cotizacion)
-
+getContent('https://api.binance.com/api/v3/ticker/price?symbol=LTCETH')
+  .then(html => JSON.parse(html))
+  .catch((err) => console.error(err));

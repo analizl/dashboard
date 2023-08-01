@@ -1,0 +1,47 @@
+<div class="content">
+	<div class="row justify-content-md-center">
+		<h3>Exchange: {{exchange.name}}</h3>
+	</div>
+
+	<!-- NEW trade -->
+	<div class="row justify-content-md-center">
+        <nav>
+			<a [routerLink]="['/new-trade',exchange.id]" class="pull-right btn btn-primary btn-xs">New trade</a>
+		</nav>
+	</div>
+	<br>
+
+
+	<!-- LIST OF Trades -->
+	<div class="row justify-content-md-center">
+		<h5>List of trades</h5>
+		<table class="table table-striped ml-2 md-2">
+			<thead>
+			<tr>
+                <th scope="col">#</th>
+				<th scope="col">Currency from</th>
+				<th scope="col">Currency to</th>
+				<th scope="col">Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+				<tr scope="row" *ngFor="let t of trades; let pos=index"  class="trade-row">
+                    <th scope="row" [routerLink]="['/detail-trade',t.id]">{{ pos + 1 }}</th>
+                    <td [routerLink]="['/detail-trade',t.id]">
+                        <div *ngFor="let c of cryptos; let i=index" >
+                            <p *ngIf="t.currency_from_id == c.id">{{ c.name}}</p>
+                        </div>
+                    </td>
+                    <td [routerLink]="['/detail-trade',t.id]">
+                        <div *ngFor="let c of cryptos; let i=index" >
+                            <p *ngIf="t.currency_to_id == c.id">{{ c.name}}</p>
+                        </div>
+                    </td>
+					<td>
+						<button class="btn btn-danger btn-xs fa fa-trash-o" (click)="onRemove(t)"></button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
